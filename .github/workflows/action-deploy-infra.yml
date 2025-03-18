@@ -44,11 +44,14 @@ jobs:
         with:
           azcliversion: latest
           inlineScript: |
-            ls -la
             az account show
 
       - name: Terraform Init
-        run: terraform -chdir="templates" init -input=false -backend-config="config/prd.tfbackend" -backend-config="key=infra.tfstate"
+        uses: azure/cli@v2
+        with: 
+          inlineScript: |
+            terraform -chdir="templates" init -input=false -backend-config="config/prd.tfbackend" -backend-config="key=infra.tfstate"
+        
 
       - name: Terraform Plan
         run: terraform -chdir="templates" plan -input=false -var-file="config/prd.tfbackend" -var-file="parameters/prd.tfvars" -out=tfplan
