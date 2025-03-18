@@ -32,6 +32,7 @@ jobs:
         with:
           azcliversion: latest
           inlineScript: |
+            ls -la
             az account show
 
       - name: Terraform Init
