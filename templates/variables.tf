@@ -16,7 +16,6 @@ variable "container_name" {
 variable "subscription_id" {
   type        = string
   description = "Subscription id where state will be created."
-
 }
 
 variable "deployment_subscription_id" {
@@ -60,25 +59,3 @@ variable "caf_resources_suffix" {
   description = "Defines CAF resources suffix."
 }
 
-variable "vnet_cidr" {
-  type        = list(string)
-  description = "Defines VNet address spaces in CIDR notation."
-  validation {
-    condition     = can([for cidr in var.vnet_cidr : cidrnetmask(cidr)])
-    error_message = "Must be a valid IPv4 CIDR block address."
-  }
-}
-
-variable "dns_servers" {
-  type        = list(string)
-  description = "DNS servers for the VNET"
-}
-
-variable "services_subnet_cidr" {
-  type        = list(string)
-  description = "Defines firewall subnet address spaces in CIDR notation."
-  validation {
-    condition     = can([for cidr in var.firewall_subnet_cidr : cidrnetmask(cidr)])
-    error_message = "Must be a valid IPv4 CIDR block address."
-  }
-}

@@ -1,4 +1,11 @@
-resource_group_name  = "custom-p-rg-swec-deploy-01"
-storage_account_name = "custompstswecdeploy01"
-container_name       = "tfstate"
-subscription_id      = "16571c19-57ee-46ce-90dd-1bc011c2d246"
+tags = {
+  "environment" = "prd"
+  "project"     = "custom"
+}
+environment = {
+  name   = "prd"
+  number = 1
+}
+region_name          = "swedencentral"
+project_name         = "custom"
+caf_resources_suffix = "wp"
