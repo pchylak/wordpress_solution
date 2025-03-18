@@ -1,12 +1,14 @@
 name: 'deploy-infra'
 
+ 
+
 on:
+  workflow_dispatch:
   push:
     branches:
-      - master
+      - main
     paths: 
-      - _deployment/terraform/common/*
-      - .github/workflows/deploy-common.yml
+      - templates/*
 
 jobs:
   terraform: 
