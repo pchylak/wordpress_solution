@@ -7,7 +7,7 @@ module "azure_region" {
 
 resource "azurecaf_name" "this" {
   resource_types = [
-    "azurerm_managed_identity"
+    "azurerm_user_assigned_identity"
   ]
   name        = var.caf_name == "" ? module.azure_region.location_short : var.caf_name
   prefixes    = [var.project_name, substr(var.environment.name, 0, 3)]
@@ -16,7 +16,7 @@ resource "azurecaf_name" "this" {
 }
 
 resource "azurerm_user_assigned_identity" "this" {
-  name                = format("%s-%02s", azurecaf_name.this.results["azurerm_managed_identity"], var.environment.number)
+  name                = format("%s-%02s", azurecaf_name.this.results["azurerm_user_assigned_identity"], var.environment.number)
   location            = var.resource_group.location
   resource_group_name = var.resource_group.name
   tags                = var.tags
