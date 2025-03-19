@@ -54,7 +54,7 @@ jobs:
         
 
       - name: Terraform Plan
-        run: terraform -chdir="templates" plan -input=false -var-file="config/prd.tfbackend" -var-file="environments/prd.tfvars" --out=out.tfplan
+        run: terraform -chdir="templates" plan -input=false -var-file="config/prd.tfbackend" -var-file="environments/prd.tfvars" -out=out.tfplan
 
       - name: Terraform Apply
-        run: terraform apply out.tfplan -input=false -auto-approve
+        run: terraform apply out.tfplan -auto-approve
