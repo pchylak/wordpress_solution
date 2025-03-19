@@ -47,10 +47,7 @@ jobs:
             az account show
 
       - name: Terraform Init
-        uses: azure/cli@v2
-        with: 
-          inlineScript: |
-            terraform -chdir="templates" init -input=false -backend-config="config/prd.tfbackend" -backend-config="key=infra.tfstate"
+        run: terraform -chdir="templates" init -input=false -backend-config="config/prd.tfbackend" -backend-config="key=infra.tfstate"
         
 
       - name: Terraform Plan
