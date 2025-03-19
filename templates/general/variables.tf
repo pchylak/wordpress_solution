@@ -86,3 +86,15 @@ variable "subnets" {
   }))
   description = "List of subnets to create in the virtual network."
 }
+
+variable "mysql_server_sku" {
+  type        = string
+  description = "The SKU of the MySQL server."
+  default     = "B_Standard_B1s"
+}
+
+variable "create_private_endpoint" {
+  type        = bool
+  description = "Create a private endpoint for the MySQL server."
+  default     = true
+}

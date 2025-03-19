@@ -72,3 +72,22 @@ module "virtual_network" {
   vnet_cidr = var.vnet_cidr
   subnets   = var.subnets
 }
+
+module "mysql_flexible_server" {
+  source = "../modules/mysql_flexible_server"
+
+  tags        = var.tags
+  environment = var.environment
+  resource_group = {
+    name     = azurerm_resource_group.this.name
+    location = azurerm_resource_group.this.location
+  }
+
+  project_name         = var.project_name
+  caf_name             = var.caf_name
+  caf_resources_suffix = var.caf_resources_suffix
+
+  server_sku              = var.mysql_server_sku
+  create_private_endpoint = var.create_private_endpoint
+  virtual_network_id      = module.virtual_network.virtual_network_id
+}
