@@ -48,11 +48,11 @@ jobs:
             az account show
 
       - name: Terraform Init
-        run: terraform -chdir="templates/general" init -input=false -backend-config="config/prd.tfbackend" -backend-config="key=general/infra.tfstate"
+        run: terraform -chdir="templates/general" init -input=false -backend-config="../config/prd.tfbackend" -backend-config="key=general/infra.tfstate"
         
 
       - name: Terraform Plan
-        run: terraform -chdir="templates/general" plan -input=false -var-file="config/prd.tfbackend" -var-file="environments/prd.tfvars" -out=tfplan
+        run: terraform -chdir="templates/general" plan -input=false -var-file="../config/prd.tfbackend" -var-file="environments/prd.tfvars" -out=tfplan
 
       - name: Terraform Apply
         run: terraform -chdir="templates/general" apply tfplan
