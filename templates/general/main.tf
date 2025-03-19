@@ -22,7 +22,7 @@ resource "azurerm_resource_group" "this" {
 }
 
 module "managed_identity" {
-  source = "./modules/managed_identity"
+  source = "../modules/managed_identity"
 
   tags        = var.tags
   environment = var.environment
@@ -39,7 +39,7 @@ module "managed_identity" {
 }
 
 module "app_service_plan" {
-  source = "./modules/app_service_plan"
+  source = "../modules/app_service_plan"
 
   app_service_plan_size = "P1v2"
   app_service_plan_tier = "PremiumV2"
