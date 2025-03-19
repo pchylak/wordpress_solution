@@ -51,5 +51,24 @@ module "app_service_plan" {
     location = azurerm_resource_group.this.location
     name     = azurerm_resource_group.this.name
   }
-  tags = var.tags
+  tags       = var.tags
+  depends_on = [azurerm_resource_group.this]
+}
+
+module "virtual_network" {
+  source = "../modules/virtual_network"
+
+  tags        = var.tags
+  environment = var.environment
+  resource_group = {
+    name     = azurerm_resource_group.this.name
+    location = azurerm_resource_group.this.location
+  }
+
+  project_name         = var.project_name
+  caf_name             = var.caf_name
+  caf_resources_suffix = var.caf_resources_suffix
+
+  vnet_cidr = var.vnet_cidr
+  subnets   = var.subnets
 }

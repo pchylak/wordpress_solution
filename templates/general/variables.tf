@@ -68,3 +68,20 @@ variable "permissions" {
   description = "Defines a list of role names and scopes to assign to the managed identity."
   default     = []
 }
+
+variable "vnet_cidr" {
+  type        = list(string)
+  description = "Defines VNet address spaces in CIDR notation."
+  validation {
+    condition     = can([for cidr in var.vnet_cidr : cidrnetmask(cidr)])
+    error_message = "Must be a valid IPv4 CIDR block address."
+  }
+}
+
+variable "subnets" {
+  type = list(object({
+    cidr              = string
+    service_endpoints = list(string)
+  }))
+  description = "List of subnets to create in the virtual network."
+}

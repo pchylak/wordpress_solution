@@ -10,3 +10,14 @@ environment = {
 region_name          = "swedencentral"
 project_name         = "it"
 caf_resources_suffix = "general"
+vnet_cidr            = ["10.0.0.0/22"]
+subnets = [
+  {
+    cidr              = "10.0.0.0/24"
+    service_endpoints = []
+  },
+  {
+    cidr              = "10.0.1.0/24"
+    service_endpoints = []
+  }
+]
