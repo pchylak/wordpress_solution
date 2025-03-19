@@ -9,6 +9,8 @@ on:
       - main
     paths: 
       - templates/*
+      - environments/*
+      - .github/workflows/action-deploy-infra.yml
       
 permissions:
   id-token: write
