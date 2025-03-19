@@ -1,7 +1,6 @@
 module "azure_region" {
-  #checkov:skip=CKV_TF_1
   source  = "claranet/regions/azurerm"
-  version = "6.1.0"
+  version = "7.3.1"
 
   azure_region = var.resource_group.location
 }
