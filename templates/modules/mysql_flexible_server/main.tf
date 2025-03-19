@@ -42,7 +42,7 @@ resource "azurerm_mysql_flexible_server" "this" {
 }
 
 resource "azurerm_private_dns_zone" "this" {
-  count = var.create_private_endpoint ? 1 : 0
+  count = var.create_private_endpoint == true ? 1 : 0
 
   name                = format("%s.%s", azurerm_mysql_flexible_server.this.name, "private.mysql.database.azure.com")
   resource_group_name = var.resource_group.name
