@@ -23,13 +23,12 @@ resource "azurerm_virtual_network" "this" {
   address_space       = var.vnet_cidr
   dns_servers         = var.dns_servers
   tags                = var.tags
-}
-
-resource "azurerm_subnet" "this" {
-  count                = length(var.subnets)
-  name                 = format("%s-%02s", azurecaf_name.this.results["azurerm_subnet"], var.environment.number)
-  resource_group_name  = var.resource_group.name
-  virtual_network_name = azurerm_virtual_network.this.name
-  address_prefixes     = var.subnets[count.index].cidr
-  service_endpoints    = var.subnets[count.index].service_endpoints
+  dynamic "subnet" {
+    for_each = var.subnets
+    content {
+      name              = subnet.value.name
+      address_prefixes  = [subnet.value.cidr]
+      service_endpoints = subnet.value.service_endpoints
+    }
+  }
 }

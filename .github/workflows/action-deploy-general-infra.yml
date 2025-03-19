@@ -6,8 +6,8 @@ on:
     branches:
       - main
     paths: 
-      - templates/*
-      - environments/*
+      - templates/general/*
+      - templates/general/environments/*
       - .github/workflows/action-deploy-general-infra.yml
       
 permissions:

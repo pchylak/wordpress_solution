@@ -15,9 +15,11 @@ subnets = [
   {
     cidr              = "10.0.0.0/24"
     service_endpoints = []
+    name              = "subnet1"
   },
   {
     cidr              = "10.0.1.0/24"
     service_endpoints = []
+    name              = "subnet2"
   }
 ]

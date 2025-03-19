@@ -55,6 +55,7 @@ variable "subnets" {
   type = list(object({
     cidr              = string
     service_endpoints = list(string)
+    name              = string
   }))
   description = "List of subnets to create in the virtual network."
 }
