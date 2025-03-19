@@ -48,11 +48,12 @@ resource "azurerm_private_dns_zone" "this" {
   resource_group_name = var.resource_group.name
 
   depends_on = [azurerm_mysql_flexible_server.this]
+  tags       = var.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "example" {
   name                  = "mysql_private_dns_link"
-  private_dns_zone_name = azurerm_private_dns_zone.this.name
+  private_dns_zone_name = azurerm_private_dns_zone.this.name[0]
   virtual_network_id    = var.virtual_network_id
   resource_group_name   = var.resource_group.name
 
