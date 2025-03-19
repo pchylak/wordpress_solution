@@ -20,3 +20,21 @@ resource "azurerm_resource_group" "this" {
   location = var.region_name
   tags     = var.tags
 }
+
+module "managed_identity" {
+  source = "./modules/managed_identity"
+
+  tags        = var.tags
+  environment = var.environment
+  resource_group = {
+    name     = azurerm_resource_group.this.name
+    location = azurerm_resource_group.this.location
+  }
+
+  project_name         = var.project_name
+  caf_name             = var.caf_name
+  caf_resources_suffix = var.caf_resources_suffix
+
+  permissions = var.permissions
+
+}

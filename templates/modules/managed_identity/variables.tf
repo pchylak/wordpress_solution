@@ -1,28 +1,3 @@
-variable "resource_group_name" {
-  type        = string
-  description = "Name of the resource group where state will be created."
-}
-
-variable "storage_account_name" {
-  type        = string
-  description = "Name of the storage account where the Terraform state file will be stored."
-}
-
-variable "container_name" {
-  type        = string
-  description = "Name of the container where the Terraform state file will be stored."
-}
-
-variable "subscription_id" {
-  type        = string
-  description = "Subscription id where state will be created."
-}
-
-variable "deployment_subscription_id" {
-  type        = string
-  description = "Subscription id where resources will be created."
-}
-
 variable "tags" {
   type        = map(string)
   default     = {}
@@ -37,10 +12,12 @@ variable "environment" {
   description = "Environment name and number."
 }
 
-variable "region_name" {
-  type        = string
-  description = "Azure Region standard name, CLI name or slug format (used by Claranet tfwrapper) where resources will be created."
-  default     = "eu-west"
+variable "resource_group" {
+  type = object({
+    name     = string
+    location = string
+  })
+  description = "Resource group where the managed identity will be created."
 }
 
 variable "project_name" {
@@ -67,4 +44,21 @@ variable "permissions" {
   }))
   description = "Defines a list of role names and scopes to assign to the managed identity."
   default     = []
+}
+
+variable "oidc" {
+  type = object({
+    enabled                        = bool
+    audience                       = optional(list(string), ["api://AzureADTokenExchange"])
+    issuer_url                     = string
+    kubernetes_namespace           = string
+    kubernetes_serviceaccount_name = string
+  })
+  description = "Configure OIDC federation settings to establish a trusted token mechanism between the Kubernetes cluster and external systems."
+  default = {
+    enabled                        = false
+    issuer_url                     = ""
+    kubernetes_namespace           = ""
+    kubernetes_serviceaccount_name = ""
+  }
 }
