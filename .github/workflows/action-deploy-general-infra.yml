@@ -1,6 +1,4 @@
-name: 'deploy-infra'
-
- 
+name: 'deploy-general-infra'
 
 on:
   workflow_dispatch:
@@ -10,13 +8,13 @@ on:
     paths: 
       - templates/*
       - environments/*
-      - .github/workflows/action-deploy-infra.yml
+      - .github/workflows/action-deploy-general-infra.yml
       
 permissions:
   id-token: write
   contents: read
 jobs:
-  terraform: 
+  general: 
     runs-on: ubuntu-latest
     environment: prd
     steps:
@@ -50,11 +48,11 @@ jobs:
             az account show
 
       - name: Terraform Init
-        run: terraform -chdir="templates" init -input=false -backend-config="config/prd.tfbackend" -backend-config="key=infra.tfstate"
+        run: terraform -chdir="templates/general" init -input=false -backend-config="config/prd.tfbackend" -backend-config="key=general/infra.tfstate"
         
 
       - name: Terraform Plan
-        run: terraform -chdir="templates" plan -input=false -var-file="config/prd.tfbackend" -var-file="environments/prd.tfvars" -out=tfplan
+        run: terraform -chdir="templates/general" plan -input=false -var-file="config/prd.tfbackend" -var-file="environments/prd.tfvars" -out=tfplan
 
       - name: Terraform Apply
-        run: terraform -chdir="templates" apply tfplan
+        run: terraform -chdir="templates/general" apply tfplan
