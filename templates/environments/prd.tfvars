@@ -1,10 +1,10 @@
 deployment_subscription_id = "16571c19-57ee-46ce-90dd-1bc011c2d246"
 tags = {
-  "environment" = "p"
+  "environment" = "prd"
   "project"     = "custom"
 }
 environment = {
-  name   = "prd"
+  name   = "p"
   number = 1
 }
 region_name          = "swedencentral"
