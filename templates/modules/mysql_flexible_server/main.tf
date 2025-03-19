@@ -53,7 +53,7 @@ resource "azurerm_private_dns_zone" "this" {
 
 resource "azurerm_private_dns_zone_virtual_network_link" "example" {
   name                  = "mysql_private_dns_link"
-  private_dns_zone_name = azurerm_private_dns_zone.this.name[0]
+  private_dns_zone_name = azurerm_private_dns_zone.this[0].name
   virtual_network_id    = var.virtual_network_id
   resource_group_name   = var.resource_group.name
 
