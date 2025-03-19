@@ -39,14 +39,14 @@ module "managed_identity" {
 }
 
 module "app_service_plan" {
-  source = "../modules/app_service_plan"
+  source = "../modules/service_plan"
 
-  app_service_plan_size = "P1v2"
-  app_service_plan_tier = "PremiumV2"
-  caf_name              = var.caf_name
-  caf_resources_suffix  = var.caf_resources_suffix
-  environment           = var.environment
-  project_name          = var.project_name
+  service_plan_sku     = "P0v3"
+  service_plan_os      = "Linux"
+  caf_name             = var.caf_name
+  caf_resources_suffix = var.caf_resources_suffix
+  environment          = var.environment
+  project_name         = var.project_name
   resource_group = {
     location = azurerm_resource_group.this.location
     name     = azurerm_resource_group.this.name

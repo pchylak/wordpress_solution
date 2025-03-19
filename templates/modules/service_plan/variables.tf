@@ -37,14 +37,14 @@ variable "caf_resources_suffix" {
   description = "Defines CAF resources suffix."
 }
 
-variable "app_service_plan_size" {
+variable "service_plan_sku" {
   type        = string
   description = "Size of the app service plan."
   default     = "P0v2"
 }
 
-variable "app_service_plan_tier" {
+variable "service_plan_os" {
   type        = string
-  description = "Tier of the app service plan."
-  default     = "PremiumV2"
+  description = "Operating system of the app service plan."
+  default     = "Linux"
 }

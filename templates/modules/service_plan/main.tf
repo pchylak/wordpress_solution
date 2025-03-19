@@ -15,15 +15,12 @@ resource "azurecaf_name" "this" {
   clean_input = true
 }
 
-resource "azurerm_app_service_plan" "this" {
+resource "azurerm_service_plan" "this" {
   name                = format("%s-%02s", azurecaf_name.this.results["azurerm_app_service_plan"], var.environment.number)
   location            = var.resource_group.location
   resource_group_name = var.resource_group.name
-
-  sku {
-    tier = var.app_service_plan_tier
-    size = var.app_service_plan_size
-  }
+  os_type             = var.service_plan_os
+  sku_name            = var.service_plan_sku
 
   tags = var.tags
 }
