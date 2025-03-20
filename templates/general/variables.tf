@@ -96,5 +96,5 @@ variable "mysql_server_sku" {
 variable "create_private_endpoint" {
   type        = bool
   description = "Create a private endpoint for the MySQL server."
-  default     = true
+  default     = false
 }
