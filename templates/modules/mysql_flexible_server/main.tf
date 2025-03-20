@@ -33,6 +33,7 @@ resource "azurerm_private_dns_zone" "this" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "example" {
+  count                 = var.create_private_endpoint == true ? 1 : 0
   name                  = "mysql_private_dns_link"
   private_dns_zone_name = azurerm_private_dns_zone.this[0].name
   virtual_network_id    = var.virtual_network_id
@@ -50,8 +51,8 @@ resource "azurerm_mysql_flexible_server" "this" {
   sku_name                     = var.server_sku
   backup_retention_days        = 30
   geo_redundant_backup_enabled = false
-  delegated_subnet_id          = var.create_private_endpoint == true ? var.delegated_subnet_id : null
-  private_dns_zone_id          = var.create_private_endpoint == true ? azurerm_private_dns_zone.this[0].id : null
+  #delegated_subnet_id          = var.create_private_endpoint == true ? var.delegated_subnet_id : null
+  #private_dns_zone_id          = var.create_private_endpoint == true ? azurerm_private_dns_zone.this[0].id : null
 
   lifecycle {
     ignore_changes = [
