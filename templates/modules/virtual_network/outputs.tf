@@ -4,3 +4,7 @@ output "virtual_network" {
     id   = azurerm_virtual_network.this.id
   }
 }
+
+output "subnet" {
+  value = { for subnet in azurerm_virtual_network.this.subnet : subnet.name => subnet.id }
+}
