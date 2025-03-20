@@ -23,31 +23,13 @@ resource "random_password" "this" {
   special = true
 }
 
-resource "azurerm_mysql_flexible_server" "this" {
-  name                         = format("%s-%02s", azurecaf_name.this.result, var.environment.number)
-  location                     = var.resource_group.location
-  resource_group_name          = var.resource_group.name
-  administrator_login          = random_string.this.result
-  administrator_password       = random_password.this.result
-  sku_name                     = var.server_sku
-  backup_retention_days        = 30
-  geo_redundant_backup_enabled = false
-
-  lifecycle {
-    ignore_changes = [
-      zone
-    ]
-  }
-}
-
 resource "azurerm_private_dns_zone" "this" {
   count = var.create_private_endpoint == true ? 1 : 0
 
-  name                = format("%s.%s", azurerm_mysql_flexible_server.this.name, "private.mysql.database.azure.com")
+  name                = format("%s.%s", format("%s-%02s", azurecaf_name.this.result, var.environment.number), "private.mysql.database.azure.com")
   resource_group_name = var.resource_group.name
 
-  depends_on = [azurerm_mysql_flexible_server.this]
-  tags       = var.tags
+  tags = var.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "example" {
@@ -57,4 +39,26 @@ resource "azurerm_private_dns_zone_virtual_network_link" "example" {
   resource_group_name   = var.resource_group.name
 
   depends_on = [azurerm_private_dns_zone.this]
+}
+
+resource "azurerm_mysql_flexible_server" "this" {
+  name                         = format("%s-%02s", azurecaf_name.this.result, var.environment.number)
+  location                     = var.resource_group.location
+  resource_group_name          = var.resource_group.name
+  administrator_login          = random_string.this.result
+  administrator_password       = random_password.this.result
+  sku_name                     = var.server_sku
+  backup_retention_days        = 30
+  geo_redundant_backup_enabled = false
+  delegated_subnet_id          = var.create_private_endpoint == true ? azurerm_subnet.this.id : null
+  private_dns_zone_id          = var.create_private_endpoint == true ? azurerm_private_dns_zone.this[0].id : null
+
+  lifecycle {
+    ignore_changes = [
+      zone
+    ]
+  }
+
+  depends_on = [azurerm_private_dns_zone.this]
+  tags       = var.tags
 }
