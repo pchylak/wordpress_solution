@@ -90,7 +90,7 @@ variable "subnets" {
 variable "mysql_server_sku" {
   type        = string
   description = "The SKU of the MySQL server."
-  default     = "B_Standard_B1s"
+  default     = "B_Standard_B1ms"
 }
 
 variable "create_private_endpoint" {
