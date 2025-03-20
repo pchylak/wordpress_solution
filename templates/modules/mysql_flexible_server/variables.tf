@@ -52,3 +52,8 @@ variable "virtual_network_id" {
   type        = string
   description = "The ID of the virtual network where the MySQL server will be deployed."
 }
+
+variable "delegated_subnet_id" {
+  type        = string
+  description = "The ID of the subnet where the MySQL server will be deployed."
+}

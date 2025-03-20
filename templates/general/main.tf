@@ -90,4 +90,5 @@ module "mysql_flexible_server" {
   server_sku              = var.mysql_server_sku
   create_private_endpoint = var.create_private_endpoint
   virtual_network_id      = module.virtual_network.virtual_network.id
+  delegated_subnet_id     = module.virtual_network.virtual_network.subnets[0].id
 }

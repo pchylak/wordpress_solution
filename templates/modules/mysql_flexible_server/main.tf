@@ -50,7 +50,7 @@ resource "azurerm_mysql_flexible_server" "this" {
   sku_name                     = var.server_sku
   backup_retention_days        = 30
   geo_redundant_backup_enabled = false
-  delegated_subnet_id          = var.create_private_endpoint == true ? azurerm_subnet.this.id : null
+  delegated_subnet_id          = var.create_private_endpoint == true ? var.delegated_subnet_id : null
   private_dns_zone_id          = var.create_private_endpoint == true ? azurerm_private_dns_zone.this[0].id : null
 
   lifecycle {
