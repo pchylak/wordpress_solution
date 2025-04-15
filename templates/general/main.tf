@@ -92,3 +92,11 @@ module "mysql_flexible_server" {
   virtual_network_id      = ""
   delegated_subnet_id     = ""
 }
+
+resource "azurerm_mysql_flexible_database" "wordpressdb" {
+  name                = "wordpressdb"
+  resource_group_name = azurerm_resource_group.this.name
+  server_name         = module.mysql_flexible_server.name
+  charset             = "utf8mb4"
+  collation           = "utf8mb4_unicode_ci"
+}
