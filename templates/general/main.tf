@@ -102,7 +102,7 @@ resource "azurerm_mysql_flexible_database" "wordpressdb" {
 }
 
 resource "azurerm_app_service" "wordpress" {
-  name                = "wordpress-webapp-01"
+  name                = "simple-wp-custompawel-01"
   location            = azurerm_resource_group.this.location
   resource_group_name = azurerm_resource_group.this.name
   app_service_plan_id = module.app_service_plan.service_plan.id
