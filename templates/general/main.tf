@@ -112,7 +112,7 @@ resource "azurerm_app_service" "wordpress" {
   }
 
   app_settings = {
-    WORDPRESS_DB_HOST     = "${module.mysql_flexible_server.mysql_flexible_server.name}.azurewebsites.net:3306"
+    WORDPRESS_DB_HOST     = "${module.mysql_flexible_server.mysql_flexible_server.name}.mysql.database.azure.com:3306"
     WORDPRESS_DB_NAME     = azurerm_mysql_flexible_database.wordpressdb.name
     WORDPRESS_DB_USER     = "sqladmin"
     WORDPRESS_DB_PASSWORD = "_"
