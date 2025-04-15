@@ -100,3 +100,24 @@ resource "azurerm_mysql_flexible_database" "wordpressdb" {
   charset             = "utf8mb4"
   collation           = "utf8mb4_unicode_ci"
 }
+
+resource "azurerm_app_service" "wordpress" {
+  name                = "wordpress-webapp-01"
+  location            = azurerm_resource_group.this.location
+  resource_group_name = azurerm_resource_group.this.name
+  app_service_plan_id = module.app_service_plan.service_plan.id
+
+  site_config {
+    linux_fx_version = "DOCKER|wordpress:latest"
+  }
+
+  app_settings = {
+    WORDPRESS_DB_HOST     = "${module.mysql_flexible_server.mysql_flexible_server.fqdn}:3306"
+    WORDPRESS_DB_NAME     = azurerm_mysql_flexible_database.wordpressdb.name
+    WORDPRESS_DB_USER     = "sqladmin"
+    WORDPRESS_DB_PASSWORD = "_"
+    WEBSITES_PORT         = "80"
+  }
+
+  https_only = true
+}
