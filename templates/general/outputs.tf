@@ -18,7 +18,7 @@ output "service_plan" {
 
 output "container_registry" {
   value = {
-    id   = module.container_registry.container_registry.id
-    name = module.container_registry.container_registry.name
+    id   = module.container_registry.id
+    name = module.container_registry.name
   }
 }
