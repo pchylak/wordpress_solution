@@ -9,7 +9,8 @@ resource "azurecaf_name" "this" {
   resource_types = [
     "azurerm_resource_group",
     "azurerm_mysql_database",
-    "azurerm_app_service"
+    "azurerm_app_service",
+    "azurerm_managed_identity"
   ]
   name        = var.caf_name == "" ? module.azure_region.location_short : var.caf_name
   prefixes    = [var.project_name, substr(var.environment.name, 0, 3)]
@@ -23,7 +24,22 @@ resource "azurerm_resource_group" "this" {
   tags     = var.tags
 }
 
+module "managed_identity" {
+  source = "../modules/managed_identity"
 
+  tags        = var.tags
+  environment = var.environment
+  resource_group = {
+    name     = azurerm_resource_group.this.name
+    location = azurerm_resource_group.this.location
+  }
+
+  project_name         = var.project_name
+  caf_name             = var.caf_name
+  caf_resources_suffix = var.caf_resources_suffix
+
+  permissions = var.permissions
+}
 
 resource "azurerm_mysql_flexible_database" "wordpressdb" {
   name                = format("%s-%02s", azurecaf_name.this.results["azurerm_mysql_database"], var.environment.number)
@@ -37,7 +53,7 @@ resource "azurerm_app_service" "wordpress" {
   name                = format("%s-%02s", azurecaf_name.this.results["azurerm_app_service"], var.environment.number)
   location            = azurerm_resource_group.this.location
   resource_group_name = azurerm_resource_group.this.name
-  app_service_plan_id = module.app_service_plan.service_plan.id
+  app_service_plan_id = data.terraform_remote_state.general.outputs.app_service_plan.id
 
   app_settings = {
     WORDPRESS_DB_HOST     = data.terraform_remote_state.general.outputs.mysql_flexible_server.host
