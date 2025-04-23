@@ -11,14 +11,14 @@ output "mysql_flexible_server" {
 
 output "service_plan" {
   value = {
-    id   = data.terraform_remote_state.general.service_plan.app_service_plan.id
-    name = data.terraform_remote_state.general.service_plan.app_service_plan.name
+    id   = module.app_service_plan.service_plan.id
+    name = module.app_service_plan.service_plan.name
   }
 }
 
 output "container_registry" {
   value = {
-    id   = data.terraform_remote_state.general.container_registry.container_registry.id
-    name = data.terraform_remote_state.general.container_registry.container_registry.name
+    id   = module.container_registry.id
+    name = module.container_registry.name
   }
 }
