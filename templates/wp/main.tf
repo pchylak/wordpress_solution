@@ -54,6 +54,11 @@ resource "azurerm_app_service" "wordpress" {
   resource_group_name = azurerm_resource_group.this.name
   app_service_plan_id = data.terraform_remote_state.general.outputs.service_plan.id
 
+  identity {
+    type         = "user_assigned"
+    identity_ids = [module.managed_identity.identity.id]
+  }
+
   app_settings = {
     WORDPRESS_DB_HOST     = data.terraform_remote_state.general.outputs.mysql_flexible_server.host
     WORDPRESS_DB_NAME     = azurerm_mysql_flexible_database.wordpressdb.name
