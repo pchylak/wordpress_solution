@@ -55,7 +55,7 @@ resource "azurerm_app_service" "wordpress" {
   app_service_plan_id = data.terraform_remote_state.general.outputs.service_plan.id
 
   identity {
-    type         = "user_assigned"
+    type         = "UserAssigned"
     identity_ids = [module.managed_identity.managed_identity_id]
   }
 
