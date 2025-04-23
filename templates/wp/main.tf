@@ -9,8 +9,7 @@ resource "azurecaf_name" "this" {
   resource_types = [
     "azurerm_resource_group",
     "azurerm_mysql_database",
-    "azurerm_app_service",
-    "azurerm_managed_identity"
+    "azurerm_app_service"
   ]
   name        = var.caf_name == "" ? module.azure_region.location_short : var.caf_name
   prefixes    = [var.project_name, substr(var.environment.name, 0, 3)]
