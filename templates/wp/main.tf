@@ -42,7 +42,7 @@ module "managed_identity" {
 
 resource "azurerm_mysql_flexible_database" "wordpressdb" {
   name                = format("%s-%02s", azurecaf_name.this.results["azurerm_mysql_database"], var.environment.number)
-  resource_group_name = azurerm_resource_group.this.name
+  resource_group_name = data.terraform_remote_state.general.outputs.resource_group.name
   server_name         = data.terraform_remote_state.general.outputs.mysql_flexible_server.name
   charset             = "utf8mb4"
   collation           = "utf8mb4_unicode_ci"
