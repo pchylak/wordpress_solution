@@ -43,7 +43,7 @@ module "managed_identity" {
 resource "azurerm_mysql_flexible_database" "wordpressdb" {
   name                = format("%s-%02s", azurecaf_name.this.results["azurerm_mysql_database"], var.environment.number)
   resource_group_name = azurerm_resource_group.this.name
-  server_name         = data.terraform_remote_state.general.mysql_flexible_server.mysql_flexible_server.name
+  server_name         = data.terraform_remote_state.general.mysql_flexible_server.name
   charset             = "utf8mb4"
   collation           = "utf8mb4_unicode_ci"
 }
@@ -52,13 +52,13 @@ resource "azurerm_app_service" "wordpress" {
   name                = format("%s-%02s", azurecaf_name.this.results["azurerm_app_service"], var.environment.number)
   location            = azurerm_resource_group.this.location
   resource_group_name = azurerm_resource_group.this.name
-  app_service_plan_id = data.terraform_remote_state.general.service_plan.app_service_plan.id
+  app_service_plan_id = data.terraform_remote_state.general.service_plan.id
 
   app_settings = {
-    WORDPRESS_DB_HOST     = data.terraform_remote_state.general.mysql_flexible_server.mysql_flexible_server.host
+    WORDPRESS_DB_HOST     = data.terraform_remote_state.general.mysql_flexible_server.host
     WORDPRESS_DB_NAME     = azurerm_mysql_flexible_database.wordpressdb.name
-    WORDPRESS_DB_USER     = data.terraform_remote_state.general.mysql_flexible_server.mysql_flexible_server.username
-    WORDPRESS_DB_PASSWORD = data.terraform_remote_state.general.mysql_flexible_server.mysql_flexible_server.password
+    WORDPRESS_DB_USER     = data.terraform_remote_state.general.mysql_flexible_server.username
+    WORDPRESS_DB_PASSWORD = data.terraform_remote_state.general.mysql_flexible_server.password
     WEBSITES_PORT         = "80"
   }
 
