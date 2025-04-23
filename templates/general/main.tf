@@ -93,31 +93,23 @@ module "mysql_flexible_server" {
   delegated_subnet_id     = ""
 }
 
-resource "azurerm_mysql_flexible_database" "wordpressdb" {
-  name                = "wordpressdb"
-  resource_group_name = azurerm_resource_group.this.name
-  server_name         = module.mysql_flexible_server.mysql_flexible_server.name
-  charset             = "utf8mb4"
-  collation           = "utf8mb4_unicode_ci"
-}
+module "container_registry" {
+  source = "../modules/container_registry"
 
-resource "azurerm_app_service" "wordpress" {
-  name                = "simple-wp-custompawel-01"
-  location            = azurerm_resource_group.this.location
-  resource_group_name = azurerm_resource_group.this.name
-  app_service_plan_id = module.app_service_plan.service_plan.id
-
-  site_config {
-    linux_fx_version = "DOCKER|wordpress:latest"
+  tags        = var.tags
+  environment = var.environment
+  resource_group = {
+    name     = azurerm_resource_group.this.name
+    location = azurerm_resource_group.this.location
   }
 
-  app_settings = {
-    WORDPRESS_DB_HOST     = "${module.mysql_flexible_server.mysql_flexible_server.name}.mysql.database.azure.com:3306"
-    WORDPRESS_DB_NAME     = azurerm_mysql_flexible_database.wordpressdb.name
-    WORDPRESS_DB_USER     = "sqladmin"
-    WORDPRESS_DB_PASSWORD = "_"
-    WEBSITES_PORT         = "80"
-  }
+  project_name         = var.project_name
+  caf_name             = var.caf_name
+  caf_resources_suffix = var.caf_resources_suffix
 
-  https_only = true
+  sku                      = "Premium"
+  quarantine_enabled       = false
+  georeplication_locations = []
+  read_access              = var.acr_read_access
+  write_access             = var.acr_write_access
 }

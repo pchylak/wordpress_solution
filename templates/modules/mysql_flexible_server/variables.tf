@@ -57,3 +57,10 @@ variable "delegated_subnet_id" {
   type        = string
   description = "The ID of the subnet where the MySQL server will be deployed."
 }
+
+variable "mysql_version" {
+  type        = string
+  description = "The version of MySQL to use."
+  default     = "8.0"
+
+}
