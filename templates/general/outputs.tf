@@ -3,8 +3,8 @@ output "mysql_flexible_server" {
     name     = module.mysql_flexible_server.mysql_flexible_server.name
     id       = module.mysql_flexible_server.mysql_flexible_server.id
     host     = format("%s.mysql.database.azure.com", module.mysql_flexible_server.mysql_flexible_server.name)
-    username = module.mysql_flexible_server.mysql_flexible_server.administrator_login
-    password = module.mysql_flexible_server.mysql_flexible_server.administrator_password
+    username = module.mysql_flexible_server.mysql_flexible_server.username
+    password = module.mysql_flexible_server.mysql_flexible_server.password
   }
   sensitive = true
 }
