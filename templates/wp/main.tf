@@ -56,7 +56,7 @@ resource "azurerm_app_service" "wordpress" {
 
   identity {
     type         = "user_assigned"
-    identity_ids = [module.managed_identity.identity.id]
+    identity_ids = [module.managed_identity.managed_identity_id]
   }
 
   app_settings = {
