@@ -61,6 +61,6 @@ variable "delegated_subnet_id" {
 variable "mysql_version" {
   type        = string
   description = "The version of MySQL to use."
-  default     = "8.0"
+  default     = "8.0.21"
 
 }
