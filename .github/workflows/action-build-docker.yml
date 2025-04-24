@@ -43,11 +43,14 @@ jobs:
           echo "ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}" >> $GITHUB_ENV
           echo "ARM_USE_OIDC=true" >> $GITHUB_ENV
 
-      - name: Log in to ACR
-        uses: azure/docker-login@v1
+      - name: Azure CLI script
+        uses: azure/cli@v2
         with:
-          login-server: ${{ env.ACR_LOGIN_SERVER }}
-  
+          azcliversion: latest
+          inlineScript: |
+            az account show
+            az acr login --name $ACR_NAME
+
       - name: Build and push Docker image to ACR
         uses: docker/build-push-action@v5
         with:
