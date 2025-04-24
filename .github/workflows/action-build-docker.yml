@@ -9,6 +9,14 @@ on:
 permissions:
   id-token: write
   contents: read
+
+env:
+  ACR_NAME: itpcrswecswecgeneral01
+  ACR_LOGIN_SERVER: itpcrswecswecgeneral01.azurecr.io
+  APP_NAME: it-p-app-swec-swec-wp-01
+  RESOURCE_GROUP: it-p-rg-swec-swec-wp-01
+  IMAGE_NAME: wp1:latest
+
 jobs:
   build:
     environment: prd
@@ -35,16 +43,22 @@ jobs:
           echo "ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}" >> $GITHUB_ENV
           echo "ARM_USE_OIDC=true" >> $GITHUB_ENV
 
-      - name: Azure CLI script
-        uses: azure/cli@v2
+      - name: Log in to ACR
+        uses: azure/docker-login@v1
         with:
-          azcliversion: latest
-          inlineScript: |
-            az account show
+          login-server: ${{ env.ACR_LOGIN_SERVER }}
+  
+      - name: Build and push Docker image to ACR
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ env.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}
 
-      - name: Build Docker image
+      - name: Configure Web App to use the ACR image
         run: |
-          az acr login --name itpcrswecswecgeneral01 
-          docker build -t wordpress:latest .
-          docker tag wordpress:latest itpcrswecswecgeneral01.azurecr.io/wordpress:latest
-          docker push itpcrswecswecgeneral01.azurecr.io/wordpress:latest
+          az webapp config container set \
+            --name $APP_NAME \
+            --resource-group $RESOURCE_GROUP \
+            --docker-custom-image-name $ACR_LOGIN_SERVER/$IMAGE_NAME \
+            --docker-registry-server-url https://$ACR_LOGIN_SERVER
