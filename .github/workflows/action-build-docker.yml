@@ -44,6 +44,7 @@ jobs:
 
       - name: Build Docker image
         run: |
+          az acr login --name itpcrswecswecgeneral01 
           docker build -t wordpress:latest .
           docker tag wordpress:latest itpcrswecswecgeneral01.azurecr.io/wordpress:latest
           docker push itpcrswecswecgeneral01.azurecr.io/wordpress:latest
