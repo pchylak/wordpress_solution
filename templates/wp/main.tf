@@ -55,11 +55,17 @@ resource "azurerm_mysql_flexible_database" "wordpressdb" {
   collation           = "utf8mb4_unicode_ci"
 }
 
-resource "azurerm_app_service" "wordpress" {
+resource "azurerm_linux_web_app" "wordpress" {
   name                = format("%s-%02s", azurecaf_name.this.results["azurerm_app_service"], var.environment.number)
   location            = azurerm_resource_group.this.location
   resource_group_name = azurerm_resource_group.this.name
-  app_service_plan_id = data.terraform_remote_state.general.outputs.service_plan.id
+  service_plan_id     = data.terraform_remote_state.general.outputs.service_plan.id
+
+  site_config {
+    always_on                                     = true
+    container_registry_managed_identity_client_id = module.managed_identity.managed_identity_client_id
+    container_registry_use_managed_identity       = true
+  }
 
   identity {
     type         = "UserAssigned"
@@ -74,5 +80,6 @@ resource "azurerm_app_service" "wordpress" {
     WEBSITES_PORT         = "80"
   }
 
-  https_only = true
+  https_only                      = true
+  key_vault_reference_identity_id = module.managed_identity.managed_identity_id
 }
