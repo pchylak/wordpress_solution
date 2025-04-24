@@ -10,10 +10,3 @@ environment = {
 region_name          = "swedencentral"
 project_name         = "it"
 caf_resources_suffix = "wp"
-permissions = [
-  {
-    scope                            = data.terraform_remote_state.general.outputs.container_registry.id
-    role_name                        = "AcrPull"
-    skip_service_principal_aad_check = true
-  }
-]

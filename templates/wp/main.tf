@@ -17,6 +17,14 @@ resource "azurecaf_name" "this" {
   clean_input = true
 }
 
+locals {
+  permissions = merge({
+    scope                            = data.terraform_remote_state.general.outputs.container_registry.id
+    role_name                        = "AcrPull"
+    skip_service_principal_aad_check = true
+  }, var.permissions)
+}
+
 resource "azurerm_resource_group" "this" {
   name     = format("%s-%02s", azurecaf_name.this.results["azurerm_resource_group"], var.environment.number)
   location = var.region_name
@@ -37,7 +45,7 @@ module "managed_identity" {
   caf_name             = var.caf_name
   caf_resources_suffix = var.caf_resources_suffix
 
-  permissions = var.permissions
+  permissions = locals.permissions
 }
 
 resource "azurerm_mysql_flexible_database" "wordpressdb" {
