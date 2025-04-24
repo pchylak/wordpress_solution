@@ -70,3 +70,6 @@ jobs:
             --resource-group $RESOURCE_GROUP \
             --docker-custom-image-name $ACR_LOGIN_SERVER/$IMAGE_NAME \
             --docker-registry-server-url https://$ACR_LOGIN_SERVER
+
+      - name: Restart Web App
+        run: az webapp restart --name $APP_NAME --resource-group $RESOURCE_GROUP
