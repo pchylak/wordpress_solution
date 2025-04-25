@@ -16,7 +16,7 @@ resource "azurecaf_name" "this" {
 }
 
 resource "azurerm_key_vault" "this" {
-  name                       = format("%s-%02s", azurecaf_name.this.results["azurerm_key_vault"], var.environment.number)
+  name                       = format("%s%02s", azurecaf_name.this.results["azurerm_key_vault"], var.environment.number)
   location                   = var.resource_group.location
   resource_group_name        = var.resource_group.name
   sku_name                   = "standard"
