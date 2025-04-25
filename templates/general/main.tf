@@ -55,24 +55,6 @@ module "app_service_plan" {
   depends_on = [azurerm_resource_group.this]
 }
 
-module "virtual_network" {
-  source = "../modules/virtual_network"
-
-  tags        = var.tags
-  environment = var.environment
-  resource_group = {
-    name     = azurerm_resource_group.this.name
-    location = azurerm_resource_group.this.location
-  }
-
-  project_name         = var.project_name
-  caf_name             = var.caf_name
-  caf_resources_suffix = var.caf_resources_suffix
-
-  vnet_cidr = var.vnet_cidr
-  subnets   = var.subnets
-}
-
 module "mysql_flexible_server" {
   source = "../modules/mysql_flexible_server"
 
@@ -112,4 +94,31 @@ module "container_registry" {
   georeplication_locations = []
   read_access              = var.acr_read_access
   write_access             = var.acr_write_access
+}
+
+module "keyvault" {
+  source = "../modules/keyvault"
+
+  tags        = var.tags
+  environment = var.environment
+  resource_group = {
+    name     = azurerm_resource_group.this.name
+    location = azurerm_resource_group.this.location
+  }
+
+  project_name         = var.project_name
+  caf_name             = var.caf_name
+  caf_resources_suffix = var.caf_resources_suffix
+
+  secrets = [
+    {
+      name  = "mysql-username"
+      value = module.mysql_flexible_server.outputs.mysql_flexible_server.username
+    },
+    {
+      name  = "mysql-wordpress-password"
+      value = module.mysql_flexible_server.outputs.mysql_flexible_server.password
+    }
+  ]
+  depends_on = [module.mysql_flexible_server]
 }
