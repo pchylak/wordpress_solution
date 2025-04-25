@@ -103,6 +103,8 @@ RUN { \
 		echo 'html_errors = Off'; \
 	} > /usr/local/etc/php/conf.d/error-logging.ini
 
+COPY --chown=www-data:www-data /web/* /usr/src/wordpress/
+
 RUN set -eux; \
 	a2enmod rewrite expires; \
 	\
@@ -122,7 +124,24 @@ RUN set -eux; \
 # (replace all instances of "%h" with "%a" in LogFormat)
 	find /etc/apache2 -type f -name '*.conf' -exec sed -ri 's/([[:space:]]*LogFormat[[:space:]]+"[^"]*)%h([^"]*")/\1%a\2/g' '{}' +
 
-COPY --chown=www-data:www-data /web/* /usr/src/wordpress/
+	RUN set -eux; \
+	[ ! -e /usr/src/wordpress/.htaccess ]; \
+	{ \
+		echo '# BEGIN WordPress'; \
+		echo ''; \
+		echo 'RewriteEngine On'; \
+		echo 'RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]'; \
+		echo 'RewriteBase /'; \
+		echo 'RewriteRule ^index\.php$ - [L]'; \
+		echo 'RewriteCond %{REQUEST_FILENAME} !-f'; \
+		echo 'RewriteCond %{REQUEST_FILENAME} !-d'; \
+		echo 'RewriteRule . /index.php [L]'; \
+		echo ''; \
+		echo '# END WordPress'; \
+	} > /usr/src/wordpress/.htaccess; \
+	\
+	chown -R www-data:www-data /usr/src/wordpress; \
+	chmod -R 1777 wp-content
 
 
 VOLUME /var/www/html
@@ -132,6 +151,7 @@ COPY docker-entrypoint.sh /usr/local/bin/
 
 RUN ls -la /usr/src/wordpress/
 RUN ls -la /usr/local/bin/
+RUN cat /usr/local/bin/docker-entrypoint.sh
 
-ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["apache2-foreground"]
