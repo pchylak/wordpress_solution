@@ -103,7 +103,7 @@ RUN { \
 		echo 'html_errors = Off'; \
 	} > /usr/local/etc/php/conf.d/error-logging.ini
 
-COPY --chown=www-data:www-data /web/* /usr/src/wordpress/
+
 
 RUN set -eux; \
 	a2enmod rewrite expires; \
@@ -124,17 +124,15 @@ RUN set -eux; \
 # (replace all instances of "%h" with "%a" in LogFormat)
 	find /etc/apache2 -type f -name '*.conf' -exec sed -ri 's/([[:space:]]*LogFormat[[:space:]]+"[^"]*)%h([^"]*")/\1%a\2/g' '{}' +
 
+COPY -R --chown=www-data:www-data /web/* /usr/src/wordpress/
 
 VOLUME /var/www/html
 
 COPY --chown=www-data:www-data wp-config-docker.php /usr/src/wordpress/
-
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+RUN chmod -R 1777 /usr/local/wordpress/wp-content/
 
-RUN ls -la /usr/src/wordpress/
-RUN ls -la /usr/local/bin/
-RUN cat /usr/local/bin/docker-entrypoint.sh
 
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["apache2-foreground"]
