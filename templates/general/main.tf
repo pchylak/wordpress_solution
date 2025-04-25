@@ -113,11 +113,11 @@ module "keyvault" {
   secrets = [
     {
       name  = "mysql-username"
-      value = module.mysql_flexible_server.outputs.mysql_flexible_server.username
+      value = module.mysql_flexible_server.mysql_flexible_server.username
     },
     {
       name  = "mysql-wordpress-password"
-      value = module.mysql_flexible_server.outputs.mysql_flexible_server.password
+      value = module.mysql_flexible_server.mysql_flexible_server.password
     }
   ]
   depends_on = [module.mysql_flexible_server]
