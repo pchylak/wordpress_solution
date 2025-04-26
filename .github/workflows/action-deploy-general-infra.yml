@@ -9,6 +9,7 @@ on:
       - templates/general/*
       - templates/general/environments/*
       - .github/workflows/action-deploy-general-infra.yml
+      - templates/modules/*
       
 permissions:
   id-token: write

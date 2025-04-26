@@ -9,6 +9,7 @@ on:
       - templates/wp/*
       - templates/wp/environments/*
       - .github/workflows/action-deploy-wp-infra.yml
+      - templates/modules/*
       
 permissions:
   id-token: write
