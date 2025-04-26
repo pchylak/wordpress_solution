@@ -11,7 +11,7 @@ resource "azurecaf_name" "this" {
   ]
   name        = var.caf_name == "" ? module.azure_region.location_short : var.caf_name
   prefixes    = [var.project_name, substr(var.environment.name, 0, 3)]
-  suffixes    = [module.azure_region.location_short, var.caf_resources_suffix]
+  suffixes    = [var.caf_resources_suffix]
   clean_input = true
 }
 
