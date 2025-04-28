@@ -75,8 +75,8 @@ resource "azurerm_linux_web_app" "wordpress" {
   app_settings = {
     WORDPRESS_DB_HOST     = data.terraform_remote_state.general.outputs.mysql_flexible_server.host
     WORDPRESS_DB_NAME     = azurerm_mysql_flexible_database.wordpressdb.name
-    WORDPRESS_DB_USER     = data.terraform_remote_state.general.outputs.mysql_flexible_server.username
-    WORDPRESS_DB_PASSWORD = data.terraform_remote_state.general.outputs.mysql_flexible_server.password
+    WORDPRESS_DB_USER     = "@Microsoft.KeyVault(VaultName=${data.terraform_remote_state.general.outputs.keyvault.name};SecretName=mysql-username)"
+    WORDPRESS_DB_PASSWORD = "@Microsoft.KeyVault(VaultName=${data.terraform_remote_state.general.outputs.keyvault.name};SecretName=mysql-wordpress-password)"
     WEBSITES_PORT         = "80"
   }
 
