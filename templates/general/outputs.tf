@@ -33,8 +33,8 @@ output "resource_group" {
 
 output "keyvault" {
   value = {
-    id   = module.keyvault.id
-    name = module.keyvault.name
+    id   = module.keyvault.keyvault.id
+    name = module.keyvault.keyvault.name
   }
   sensitive = true
 }
