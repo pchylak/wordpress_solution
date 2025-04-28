@@ -33,8 +33,8 @@ output "resource_group" {
 
 output "keyvault" {
   value = {
-    id   = azurerm_key_vault.this.id
-    name = azurerm_key_vault.this.name
+    id   = module.keyvault.id
+    name = module.keyvault.name
   }
   sensitive = true
 }
