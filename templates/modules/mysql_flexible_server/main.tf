@@ -64,3 +64,11 @@ resource "azurerm_mysql_flexible_server" "this" {
   depends_on = [azurerm_private_dns_zone.this]
   tags       = var.tags
 }
+
+resource "azurerm_mysql_flexible_server_firewall_rule" "example" {
+  name                = "AzureFirewallRule"
+  resource_group_name = var.resource_group.name
+  server_name         = azurerm_mysql_flexible_server.this.name
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "0.0.0.0"
+}
