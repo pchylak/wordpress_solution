@@ -36,6 +36,8 @@ module "managed_identity" {
   caf_resources_suffix = var.caf_resources_suffix
 
   permissions = var.permissions
+
+  depends_on = [azurerm_resource_group.this]
 }
 
 module "app_service_plan" {
@@ -73,6 +75,8 @@ module "mysql_flexible_server" {
   create_private_endpoint = var.create_private_endpoint
   virtual_network_id      = ""
   delegated_subnet_id     = ""
+
+  depends_on = [azurerm_resource_group.this]
 }
 
 module "container_registry" {
@@ -94,6 +98,8 @@ module "container_registry" {
   georeplication_locations = []
   read_access              = var.acr_read_access
   write_access             = var.acr_write_access
+
+  depends_on = [azurerm_resource_group.this]
 }
 
 module "keyvault" {
