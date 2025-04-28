@@ -30,3 +30,11 @@ output "resource_group" {
   }
 
 }
+
+output "keyvault" {
+  value = {
+    id   = azurerm_key_vault.this.id
+    name = azurerm_key_vault.this.name
+  }
+  sensitive = true
+}
