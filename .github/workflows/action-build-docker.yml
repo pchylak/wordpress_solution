@@ -17,10 +17,10 @@ permissions:
   contents: read
 
 env:
-  ACR_NAME: itpcrswecswecgeneral01
-  ACR_LOGIN_SERVER: itpcrswecswecgeneral01.azurecr.io
-  APP_NAME: it-p-app-swec-swec-wp-01
-  RESOURCE_GROUP: it-p-rg-swec-swec-wp-01
+  ACR_NAME: itpcrswecgeneral01
+  ACR_LOGIN_SERVER: itpcrswecgeneral01.azurecr.io
+  APP_NAME: it-p-app-swec-wp-01
+  RESOURCE_GROUP: it-p-rg-swec-wp-01
   IMAGE_NAME: wp1:latest
 
 jobs:
