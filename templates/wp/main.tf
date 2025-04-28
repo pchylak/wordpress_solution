@@ -83,3 +83,13 @@ resource "azurerm_linux_web_app" "wordpress" {
   https_only                      = true
   key_vault_reference_identity_id = module.managed_identity.managed_identity_id
 }
+
+resource "azurerm_role_assignment" "add_kv_role" {
+  principal_id         = module.managed_identity.managed_identity_principal_id
+  role_definition_name = "Key Vault Secrets User"
+  scope                = data.terraform_remote_state.general.outputs.keyvault.id
+  depends_on = [
+    module.managed_identity
+  ]
+
+}
