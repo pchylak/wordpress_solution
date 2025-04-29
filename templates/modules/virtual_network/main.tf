@@ -10,9 +10,9 @@ resource "azurecaf_name" "this" {
     "azurerm_virtual_network",
     "azurerm_subnet"
   ]
-  name        = var.caf_name == "" ? module.azure_region.location_short : var.caf_name
-  prefixes    = [var.project_name, substr(var.environment.name, 0, 3)]
-  suffixes    = [var.caf_resources_suffix]
+  name        = substr(var.environment.name, 0, 4)
+  prefixes    = []
+  suffixes    = [var.caf_name == "" ? module.azure_region.location_short : var.caf_name, var.caf_resources_suffix]
   clean_input = true
 }
 

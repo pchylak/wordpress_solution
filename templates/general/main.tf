@@ -9,9 +9,9 @@ resource "azurecaf_name" "this" {
   resource_types = [
     "azurerm_resource_group"
   ]
-  name        = var.caf_name == "" ? module.azure_region.location_short : var.caf_name
+  name        = substr(var.environment.name, 0, 4)
   prefixes    = []
-  suffixes    = [substr(var.environment.name, 0, 3), var.caf_resources_suffix]
+  suffixes    = [var.caf_name == "" ? module.azure_region.location_short : var.caf_name, var.caf_resources_suffix]
   clean_input = true
 }
 
