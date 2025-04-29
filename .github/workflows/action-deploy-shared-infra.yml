@@ -1,4 +1,4 @@
-name: 'deploy-general-infra'
+name: 'deploy-shared-infra'
 
 on:
   workflow_dispatch:
@@ -6,16 +6,16 @@ on:
     branches:
       - main
     paths: 
-      - templates/general/*
-      - templates/general/environments/*
-      - .github/workflows/action-deploy-general-infra.yml
+      - templates/shared/*
+      - templates/shared/environments/*
+      - .github/workflows/action-deploy-shared-infra.yml
       - templates/modules/*
       
 permissions:
   id-token: write
   contents: read
 jobs:
-  general: 
+  shared: 
     runs-on: ubuntu-latest
     environment: prd
     steps:
@@ -49,11 +49,11 @@ jobs:
             az account show
 
       - name: Terraform Init
-        run: terraform -chdir="templates/general" init -input=false -backend-config="../config/prd.tfbackend" -backend-config="key=general/infra.tfstate"
+        run: terraform -chdir="templates/shared" init -input=false -backend-config="../config/prd.tfbackend" -backend-config="key=shared/infra.tfstate"
         
 
       - name: Terraform Plan
-        run: terraform -chdir="templates/general" plan -input=false -var-file="../config/prd.tfbackend" -var-file="environments/prd.tfvars" -out=tfplan
+        run: terraform -chdir="templates/shared" plan -input=false -var-file="../config/prd.tfbackend" -var-file="environments/prd.tfvars" -out=tfplan
 
       - name: Terraform Apply
-        run: terraform -chdir="templates/general" apply tfplan
+        run: terraform -chdir="templates/shared" apply tfplan

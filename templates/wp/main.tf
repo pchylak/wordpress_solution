@@ -40,7 +40,7 @@ module "managed_identity" {
 
   permissions = [
     {
-      scope                            = data.terraform_remote_state.general.outputs.container_registry.id
+      scope                            = data.terraform_remote_state.shared.outputs.container_registry.id
       role_name                        = "AcrPull"
       skip_service_principal_aad_check = true
     }
@@ -49,8 +49,8 @@ module "managed_identity" {
 
 resource "azurerm_mysql_flexible_database" "wordpressdb" {
   name                = format("%s-%02s", azurecaf_name.this.results["azurerm_mysql_database"], var.environment.number)
-  resource_group_name = data.terraform_remote_state.general.outputs.resource_group.name
-  server_name         = data.terraform_remote_state.general.outputs.mysql_flexible_server.name
+  resource_group_name = data.terraform_remote_state.shared.outputs.resource_group.name
+  server_name         = data.terraform_remote_state.shared.outputs.mysql_flexible_server.name
   charset             = "utf8mb4"
   collation           = "utf8mb4_unicode_ci"
 }
@@ -59,7 +59,7 @@ resource "azurerm_linux_web_app" "wordpress" {
   name                = format("%s-%02s", azurecaf_name.this.results["azurerm_app_service"], var.environment.number)
   location            = azurerm_resource_group.this.location
   resource_group_name = azurerm_resource_group.this.name
-  service_plan_id     = data.terraform_remote_state.general.outputs.service_plan.id
+  service_plan_id     = data.terraform_remote_state.shared.outputs.service_plan.id
 
   site_config {
     always_on                                     = true
@@ -73,10 +73,10 @@ resource "azurerm_linux_web_app" "wordpress" {
   }
 
   app_settings = {
-    WORDPRESS_DB_HOST     = data.terraform_remote_state.general.outputs.mysql_flexible_server.host
+    WORDPRESS_DB_HOST     = data.terraform_remote_state.shared.outputs.mysql_flexible_server.host
     WORDPRESS_DB_NAME     = azurerm_mysql_flexible_database.wordpressdb.name
-    WORDPRESS_DB_USER     = "@Microsoft.KeyVault(VaultName=${data.terraform_remote_state.general.outputs.keyvault.name};SecretName=mysql-username)"
-    WORDPRESS_DB_PASSWORD = "@Microsoft.KeyVault(VaultName=${data.terraform_remote_state.general.outputs.keyvault.name};SecretName=mysql-wordpress-password)"
+    WORDPRESS_DB_USER     = "@Microsoft.KeyVault(VaultName=${data.terraform_remote_state.shared.outputs.keyvault.name};SecretName=mysql-username)"
+    WORDPRESS_DB_PASSWORD = "@Microsoft.KeyVault(VaultName=${data.terraform_remote_state.shared.outputs.keyvault.name};SecretName=mysql-wordpress-password)"
     WEBSITES_PORT         = "80"
   }
 
@@ -87,7 +87,7 @@ resource "azurerm_linux_web_app" "wordpress" {
 resource "azurerm_role_assignment" "add_kv_role" {
   principal_id         = module.managed_identity.managed_identity_principal_id
   role_definition_name = "Key Vault Secrets User"
-  scope                = data.terraform_remote_state.general.outputs.keyvault.id
+  scope                = data.terraform_remote_state.shared.outputs.keyvault.id
   depends_on = [
     module.managed_identity
   ]
