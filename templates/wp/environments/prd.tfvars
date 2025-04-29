@@ -10,3 +10,4 @@ environment = {
 region_name          = "swedencentral"
 project_name         = "it"
 caf_resources_suffix = "wp"
+caf_name             = "swc"
