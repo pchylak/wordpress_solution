@@ -4,7 +4,7 @@ tags = {
   "project"     = "it"
 }
 environment = {
-  name   = "p"
+  name   = "prod"
   number = 1
 }
 region_name          = "swedencentral"
