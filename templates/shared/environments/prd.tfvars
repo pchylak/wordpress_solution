@@ -9,5 +9,5 @@ environment = {
 }
 region_name          = "swedencentral"
 project_name         = "it"
-caf_resources_suffix = "general"
+caf_resources_suffix = "shared"
 caf_name             = "swc"
