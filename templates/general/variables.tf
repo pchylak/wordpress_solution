@@ -69,24 +69,6 @@ variable "permissions" {
   default     = []
 }
 
-variable "vnet_cidr" {
-  type        = list(string)
-  description = "Defines VNet address spaces in CIDR notation."
-  validation {
-    condition     = can([for cidr in var.vnet_cidr : cidrnetmask(cidr)])
-    error_message = "Must be a valid IPv4 CIDR block address."
-  }
-}
-
-variable "subnets" {
-  type = list(object({
-    cidr              = string
-    service_endpoints = list(string)
-    name              = string
-  }))
-  description = "List of subnets to create in the virtual network."
-}
-
 variable "mysql_server_sku" {
   type        = string
   description = "The SKU of the MySQL server."

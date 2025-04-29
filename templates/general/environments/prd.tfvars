@@ -4,22 +4,10 @@ tags = {
   "project"     = "it"
 }
 environment = {
-  name   = "p"
+  name   = "prod"
   number = 1
 }
 region_name          = "swedencentral"
 project_name         = "it"
 caf_resources_suffix = "general"
-vnet_cidr            = ["10.0.0.0/22"]
-subnets = [
-  {
-    cidr              = "10.0.0.0/24"
-    service_endpoints = []
-    name              = "subnet1"
-  },
-  {
-    cidr              = "10.0.1.0/24"
-    service_endpoints = []
-    name              = "subnet2"
-  }
-]
+caf_name             = "swc"
